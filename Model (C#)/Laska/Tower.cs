@@ -24,9 +24,22 @@ namespace Laska
             return tokens.Count;
         }
 
-        public void Push(Token token)
+        public Tower Push(Token token)
         {
             tokens.Push(token);
+            return this;
+        }
+
+        public Tower Append(Token token)
+        {
+            var array = tokens.ToArray();
+            tokens.Clear();
+            tokens.Push(token);
+            for (int i = array.Length - 1; i >= 0; i--)
+            {
+                tokens.Push(array[i]);
+            }
+            return this;
         }
 
         public Token Pop()
@@ -59,6 +72,15 @@ namespace Laska
             return builder.ToString();
         }
 
+        public override bool Equals(object obj)
+        {
+            return this == obj as Tower;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
         public static bool operator ==(Tower t, Tower t1)
         {

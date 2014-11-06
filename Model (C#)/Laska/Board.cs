@@ -16,6 +16,8 @@ namespace Laska
 
         public TokenColor Turn;
 
+        public Position? LockedPosition;
+
         public static OutLog Log = Console.WriteLine;
 
         public Board(TokenColor turn) : this(turn, EMPTY)
@@ -40,17 +42,28 @@ namespace Laska
             {
                 if (rows[i].Length == 0)
                 {
+                    for (int j = i % 2; j < 7; j += 2)
+                    {
+                        Towers[j, i] = new Tower("");
+                        Towers[j, i].Position.BCol = (byte)j;
+                        Towers[j, i].Position.BRow = (byte)i;
+                    }
                     continue;
                 }
                 string[] row = rows[i].Split(',');
                 int count = 0;
-                for (int j = i % 2; j < 7; j += 2, ++count)
+                for (int j = i % 2; j < 7 && count < row.Length; j += 2, ++count)
                 {
                     Towers[j, i] = new Tower(row[count]);
                     Towers[j, i].Position.BCol = (byte)j;
                     Towers[j, i].Position.BRow = (byte)i;
                 }
-            
+                for (int j = i % 2 + count * 2; j < 7; j += 2)
+                {
+                    Towers[j, i] = new Tower("");
+                    Towers[j, i].Position.BCol = (byte)j;
+                    Towers[j, i].Position.BRow = (byte)i;
+                }
             }
         }
 
@@ -82,37 +95,173 @@ namespace Laska
         {
             get
             {
-                return Towers[index.BCol, index.BRow];
+                if (index.IsValid)
+                {
+                    return Towers[index.BCol, index.BRow];
+                }
+                else
+                {
+                    return null;
+                }
             }
 
             set
             {
-                Towers[index.BCol, index.BRow] = value;
+                if (index.IsValid)
+                {
+                    if (value != null)
+                    {
+                        value.Position = index;
+                    }
+                    Towers[index.BCol, index.BRow] = value;
+                }
             }
         }
 
-        public List<Position> GetValidActions(byte x, byte y)
+        public void ChangeTurns()
+        {
+            if (Turn == TokenColor.BLACK)
+            {
+                Turn = TokenColor.WHITE;
+            }
+            else
+            {
+                Turn = TokenColor.BLACK;
+            }
+            LockedPosition = null;
+        }
+
+        public List<Action> GetValidActions(byte x, byte y)
         {
             return GetValidActions(new Position(x, y));
         }
 
-        public List<Position> GetValidActions(Position position)
+        public List<Action> GetValidActions(Position position)
         {
-            Log(position.Row + " " + position.Col);
+            List<Action> actions = new List<Action>(2);
 
-            List<Position> actions = new List<Position>(2);
-
-            Tower tower = Towers[position.BCol, position.BRow];
-            if (tower != null && tower.Count() == 0)
+            if (LockedPosition.HasValue && !LockedPosition.Value.Equals(position))
             {
                 return actions;
             }
-            if (tower.Peek().Value == TokenValue.SOLDIER)
+
+            Tower tower = this[position];
+            if (tower == null || tower.Count() == 0)
             {
-                
+                return actions;
+            }
+            var token = tower.Peek();
+            if (token.Color != Turn)
+            {
+                return actions;
+            }
+            if (token.Value == TokenValue.SOLDIER)
+            {
+                if (!LockedPosition.HasValue)
+                {
+                    actions.AddRange(soldierWalk(position));
+                }
+                actions.AddRange(soldierHop(position));
+            }
+            else if (token.Value == TokenValue.GENERAL)
+            {
+
             }
 
             return actions;
+        }
+
+        private List<Action> soldierWalk(Position position)
+        {
+            int direction = this[position].Peek().Color == TokenColor.WHITE ? 1 : -1;
+            List<Action> actions = new List<Action>(2);
+
+            Position left = new Position(position);
+            left.BCol -= 1;
+            left.BRow = (byte)(left.BRow + direction);
+            if (left.IsValid)
+            {
+                Tower leftTower = this[left];
+                if (leftTower == null || leftTower.Count() == 0)
+                {
+                    actions.Add(new Action(position, left));
+                }
+            }
+
+            Position right = new Position(position);
+            right.BCol += 1;
+            right.BRow = (byte)(right.BRow + direction);
+            if (right.IsValid)
+            {
+                Tower rightTower = this[right];
+                if (rightTower == null || rightTower.Count() == 0)
+                {
+                    actions.Add(new Action(position, right));
+                }
+            }
+            
+
+            return actions;
+        }
+
+        private List<Action> soldierHop(Position position)
+        {
+            TokenColor color = this[position].Peek().Color;
+            int direction = color == TokenColor.WHITE ? 1 : -1;
+            List<Action> actions = new List<Action>(2);
+
+            Position left = new Position(position);
+            left.BCol -= 1;
+            left.BRow = (byte)(left.BRow + direction);
+            Tower leftTower = this[left];
+            if (leftTower != null && leftTower.Count() != 0 && leftTower.Peek().Color != color)
+            {
+                Position lefter = new Position(left);
+                lefter.BCol -= 1;
+                lefter.BRow = (byte)(lefter.BRow + direction);
+                if (lefter.IsValid)
+                {
+                    Tower lefterTower = this[lefter];
+                    if (lefterTower == null || lefterTower.Count() == 0)
+                    {
+                        actions.Add(new Action(position, left, lefter));
+                    }
+                }
+            }
+
+
+            Position right = new Position(position);
+            right.BCol += 1;
+            right.BRow = (byte)(right.BRow + direction);
+            Tower rightTower = this[right];
+            if (rightTower != null && rightTower.Count() != 0 && rightTower.Peek().Color != color)
+            {
+                Position righter = new Position(right);
+                righter.BCol += 1;
+                righter.BRow = (byte)(righter.BRow + direction);
+                if (righter.IsValid)
+                {
+                    Tower righterTower = this[righter];
+                    if (righterTower == null || righterTower.Count() == 0)
+                    {
+                        actions.Add(new Action(position, right, righter));
+                    }
+                }
+            }
+
+
+
+            return actions;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this == obj as Board;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         public static bool operator ==(Board b, Board b1)

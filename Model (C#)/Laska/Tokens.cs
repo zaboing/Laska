@@ -64,6 +64,20 @@ namespace Laska
             return Tag.ToString();
         }
 
+        public override int GetHashCode()
+        {
+            return Tag.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Token)
+            {
+                return this == (Token)obj;
+            }
+            return false;
+        }
+
         public static bool operator ==(Token t, Token t1)
         {
             return t.Tag == t1.Tag;

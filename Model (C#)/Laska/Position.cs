@@ -36,10 +36,47 @@ namespace Laska
             }
         }
 
+        public bool IsValid
+        {
+            get
+            {
+                return Row >= Row.Min && Row <= Row.Max && Col >= Column.A && Col <= Column.G;
+            }
+        }
+
         public Position(byte x, byte y)
         {
             Col = (Column)(x);
             Row = (Row)(y + 1);
+        }
+
+        public Position(Position pos) : this(pos.BCol, pos.BRow)
+        {
+
+        }
+
+        public override string ToString()
+        {
+            return Col + " " + Row;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            if (obj is Position)
+            {
+                Position pos = (Position)obj;
+                return pos.Col == Col && pos.Row == Row;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 
