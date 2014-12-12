@@ -146,7 +146,7 @@ namespace Laska
             }
 
             Tower tower = this[position];
-            if (tower == null || tower.Count() == 0)
+            if (tower == null || tower.Count == 0)
             {
                 return actions;
             }
@@ -165,7 +165,11 @@ namespace Laska
             }
             else if (token.Value == TokenValue.GENERAL)
             {
-
+                if (!LockedPosition.HasValue)
+                {
+                    actions.AddRange(generalWalk(position));
+                }
+                actions.AddRange(generalHop(position));
             }
 
             return actions;
@@ -182,7 +186,7 @@ namespace Laska
             if (left.IsValid)
             {
                 Tower leftTower = this[left];
-                if (leftTower == null || leftTower.Count() == 0)
+                if (leftTower == null || leftTower.Count == 0)
                 {
                     actions.Add(new Action(position, left));
                 }
@@ -194,7 +198,7 @@ namespace Laska
             if (right.IsValid)
             {
                 Tower rightTower = this[right];
-                if (rightTower == null || rightTower.Count() == 0)
+                if (rightTower == null || rightTower.Count == 0)
                 {
                     actions.Add(new Action(position, right));
                 }
@@ -214,7 +218,7 @@ namespace Laska
             left.BCol -= 1;
             left.BRow = (byte)(left.BRow + direction);
             Tower leftTower = this[left];
-            if (leftTower != null && leftTower.Count() != 0 && leftTower.Peek().Color != color)
+            if (leftTower != null && leftTower.Count != 0 && leftTower.Peek().Color != color)
             {
                 Position lefter = new Position(left);
                 lefter.BCol -= 1;
@@ -222,7 +226,7 @@ namespace Laska
                 if (lefter.IsValid)
                 {
                     Tower lefterTower = this[lefter];
-                    if (lefterTower == null || lefterTower.Count() == 0)
+                    if (lefterTower == null || lefterTower.Count == 0)
                     {
                         actions.Add(new Action(position, left, lefter));
                     }
@@ -234,7 +238,7 @@ namespace Laska
             right.BCol += 1;
             right.BRow = (byte)(right.BRow + direction);
             Tower rightTower = this[right];
-            if (rightTower != null && rightTower.Count() != 0 && rightTower.Peek().Color != color)
+            if (rightTower != null && rightTower.Count != 0 && rightTower.Peek().Color != color)
             {
                 Position righter = new Position(right);
                 righter.BCol += 1;
@@ -242,7 +246,7 @@ namespace Laska
                 if (righter.IsValid)
                 {
                     Tower righterTower = this[righter];
-                    if (righterTower == null || righterTower.Count() == 0)
+                    if (righterTower == null || righterTower.Count == 0)
                     {
                         actions.Add(new Action(position, right, righter));
                     }
@@ -250,6 +254,171 @@ namespace Laska
             }
 
 
+
+            return actions;
+        }
+
+        private List<Action> generalWalk(Position position)
+        {
+            List<Action> actions = new List<Action>();
+
+            for (int i = 1; i < 7; i++)
+            {
+                Position leftFront = new Position((byte)(position.BCol - i), (byte)(position.BRow + i));
+
+                Tower tower = this[leftFront];
+                if (tower == null || tower.Count > 0)
+                {
+                    break;
+                }
+                else
+                {
+                    actions.Add(new Action(position, leftFront));
+                }
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                Position leftBack = new Position((byte)(position.BCol - i), (byte)(position.BRow - i));
+
+                Tower tower = this[leftBack];
+                if (tower == null || tower.Count > 0)
+                {
+                    break;
+                }
+                else
+                {
+                    actions.Add(new Action(position, leftBack));
+                }
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                Position rightFront = new Position((byte)(position.BCol + i), (byte)(position.BRow + i));
+
+                Tower tower = this[rightFront];
+                if (tower == null || tower.Count > 0)
+                {
+                    break;
+                }
+                else
+                {
+                    actions.Add(new Action(position, rightFront));
+                }
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                Position rightBack = new Position((byte)(position.BCol + i), (byte)(position.BRow - i));
+
+                Tower tower = this[rightBack];
+                if (tower == null || tower.Count > 0)
+                {
+                    break;
+                }
+                else
+                {
+                    actions.Add(new Action(position, rightBack));
+                }
+            }
+
+            return actions;
+        }
+
+        private List<Action> generalHop(Position position)
+        {
+            List<Action> actions = new List<Action>();
+
+            for (int i = 1; i < 7; i++)
+            {
+                Position leftFront = new Position((byte)(position.BCol - i), (byte)(position.BRow + i));
+
+                Tower tower = this[leftFront];
+
+                if (tower == null)
+                {
+                    break;
+                }
+
+                if (tower.Count > 0 && tower.Peek().Color != this[position].Peek().Color)
+                {
+                    Position p = new Position(leftFront);
+                    p.BCol--;
+                    p.BRow++;
+                    Tower t = this[p];
+                    if (t != null && t.Count == 0)
+                    {
+                        actions.Add(new Action(position, leftFront, p));
+                    }
+                    break;
+                }
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                Position leftBack = new Position((byte)(position.BCol - i), (byte)(position.BRow - i));
+
+                Tower tower = this[leftBack];
+                if (tower == null)
+                {
+                    break;
+                }
+
+                if (tower.Count > 0 && tower.Peek().Color != this[position].Peek().Color)
+                {
+                    Position p = new Position(leftBack);
+                    p.BCol--;
+                    p.BRow--;
+                    Tower t = this[p];
+                    if (t != null && t.Count == 0)
+                    {
+                        actions.Add(new Action(position, leftBack, p));
+                    }
+                    break;
+                }
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                Position rightFront = new Position((byte)(position.BCol + i), (byte)(position.BRow + i));
+
+                Tower tower = this[rightFront];
+                if (tower == null)
+                {
+                    break;
+                }
+
+                if (tower.Count > 0 && tower.Peek().Color != this[position].Peek().Color)
+                {
+                    Position p = new Position(rightFront);
+                    p.BCol++;
+                    p.BRow++;
+                    Tower t = this[p];
+                    if (t != null && t.Count == 0)
+                    {
+                        actions.Add(new Action(position, rightFront, p));
+                    }
+                    break;
+                }
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                Position rightBack = new Position((byte)(position.BCol + i), (byte)(position.BRow - i));
+
+                Tower tower = this[rightBack];
+                if (tower == null)
+                {
+                    break;
+                }
+
+                if (tower.Count > 0 && tower.Peek().Color != this[position].Peek().Color)
+                {
+                    Position p = new Position(rightBack);
+                    p.BCol++;
+                    p.BRow--;
+                    Tower t = this[p];
+                    if (t != null && t.Count == 0)
+                    {
+                        actions.Add(new Action(position, rightBack, p));
+                    }
+                    break;
+                }
+            }
 
             return actions;
         }

@@ -19,9 +19,12 @@ namespace Laska
             }
         }
 
-        public int Count()
+        public int Count
         {
-            return tokens.Count;
+            get
+            {
+                return tokens.Count;
+            }
         }
 
         public Tower Push(Token token)
@@ -54,11 +57,24 @@ namespace Laska
 
         public Token Get(int index)
         {
-            if (index < 0 || index >= Count())
+            if (index < 0 || index >= Count)
             {
-                throw new ArgumentOutOfRangeException("Index " + index + " not in range [0;" + (Count() - 1) + "]!");
+                throw new ArgumentOutOfRangeException("Index " + index + " not in range [0;" + (Count - 1) + "]!");
             }
             return tokens.ToArray()[index];
+        }
+
+        public Token this[int index]
+        {
+            get
+            {
+                return Get(index);
+            }
+            set
+            {
+                Pop();
+                Push(value);
+            }
         }
 
         public override string ToString()

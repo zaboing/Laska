@@ -64,17 +64,20 @@ public class GameBoard : MonoBehaviour {
         parent.tag = "Tower";
         float offsetZ = 0;
         bool first = true;
+        Vector3 position = new Vector3();
+        position.x = tower.Position.BCol;
+        position.y = tower.Position.BRow;
+        parent.transform.position = position;
         for (int i = name.Length - 1; i >= 0; i--)
         {
             char c = name[i];
             GameObject gameObject = Instantiate(prefabs[c]) as GameObject;
             gameObject.name = c.ToString();
             gameObject.transform.parent = parent.transform;
-            Vector3 position = new Vector3();
-            position.x = tower.Position.BCol;
-            position.y = tower.Position.BRow;
+            position = new Vector3();
+            position.y = -i * .11f;
             position.z = offsetZ;
-            gameObject.transform.position = position;
+            gameObject.transform.localPosition = position;
             offsetZ -= .2f;
             if (first)
             {

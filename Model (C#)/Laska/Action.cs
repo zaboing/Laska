@@ -32,6 +32,20 @@ namespace Laska
             }
             board[End] = board[Start];
             board[Start] = new Tower("");
+            Tower tower = board[End];
+            Token t = tower[0];
+            if (t.Value == TokenValue.SOLDIER)
+            {
+                if (t.Color == TokenColor.WHITE && End.Row == Row.Max)
+                {
+                    t.Value = TokenValue.GENERAL;
+                }
+                else if (t.Color == TokenColor.BLACK && End.Row == Row.Min)
+                {
+                    t.Value = TokenValue.GENERAL;
+                }
+            }
+            tower[0] = t;
             if (Hop.HasValue)
             {
                 var token = board[Hop.Value].Pop();
@@ -51,7 +65,7 @@ namespace Laska
         public bool CanPerform(Board board)
         {
             var start = board[Start];
-            if (start == null || start.Count() == 0)
+            if (start == null || start.Count == 0)
             {
                 return false;
             }
@@ -60,7 +74,7 @@ namespace Laska
                 return false;
             }
             var end = board[End];
-            if (end != null && end.Count() != 0)
+            if (end != null && end.Count != 0)
             {
                 return false;
             }
