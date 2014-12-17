@@ -20,7 +20,20 @@ namespace Laska
 
         public static OutLog Log = Console.WriteLine;
 
-        public Board(TokenColor turn) : this(turn, EMPTY)
+        public Board()
+            : this(TokenColor.WHITE)
+        {
+
+        }
+
+        public Board(TokenColor turn)
+            : this(turn, EMPTY)
+        {
+
+        }
+
+        public Board(string value, TokenColor turn)
+            : this(turn, value)
         {
 
         }
@@ -131,14 +144,37 @@ namespace Laska
             LockedPosition = null;
         }
 
-        public List<Action> GetValidActions(byte x, byte y)
+        public Board doMove(Move move)
+        {
+            Board board = new Board(Turn, ToString());
+            move.Perform(board);
+            return board;
+        }
+
+        public HashSet<Move> possMoves()
+        {
+            HashSet<Move> moves = new HashSet<Move>();
+            for (int i = 0; i < 7 * 7; i++)
+            {
+                int x = i % 7;
+                int y = i / 7;
+                List<Move> actions = GetValidActions((byte)x, (byte)y);
+                foreach (Move action in actions)
+                {
+                    moves.Add(action);
+                }
+            }
+            return moves;
+        }
+
+        public List<Move> GetValidActions(byte x, byte y)
         {
             return GetValidActions(new Position(x, y));
         }
 
-        public List<Action> GetValidActions(Position position)
+        public List<Move> GetValidActions(Position position)
         {
-            List<Action> actions = new List<Action>(2);
+            List<Move> actions = new List<Move>(2);
 
             if (LockedPosition.HasValue && !LockedPosition.Value.Equals(position))
             {
@@ -175,10 +211,10 @@ namespace Laska
             return actions;
         }
 
-        private List<Action> soldierWalk(Position position)
+        private List<Move> soldierWalk(Position position)
         {
             int direction = this[position].Peek().Color == TokenColor.WHITE ? 1 : -1;
-            List<Action> actions = new List<Action>(2);
+            List<Move> actions = new List<Move>(2);
 
             Position left = new Position(position);
             left.BCol -= 1;
@@ -188,7 +224,7 @@ namespace Laska
                 Tower leftTower = this[left];
                 if (leftTower == null || leftTower.Count == 0)
                 {
-                    actions.Add(new Action(position, left));
+                    actions.Add(new Move(position, left));
                 }
             }
 
@@ -200,7 +236,7 @@ namespace Laska
                 Tower rightTower = this[right];
                 if (rightTower == null || rightTower.Count == 0)
                 {
-                    actions.Add(new Action(position, right));
+                    actions.Add(new Move(position, right));
                 }
             }
             
@@ -208,11 +244,11 @@ namespace Laska
             return actions;
         }
 
-        private List<Action> soldierHop(Position position)
+        private List<Move> soldierHop(Position position)
         {
             TokenColor color = this[position].Peek().Color;
             int direction = color == TokenColor.WHITE ? 1 : -1;
-            List<Action> actions = new List<Action>(2);
+            List<Move> actions = new List<Move>(2);
 
             Position left = new Position(position);
             left.BCol -= 1;
@@ -228,7 +264,7 @@ namespace Laska
                     Tower lefterTower = this[lefter];
                     if (lefterTower == null || lefterTower.Count == 0)
                     {
-                        actions.Add(new Action(position, left, lefter));
+                        actions.Add(new Move(position, left, lefter));
                     }
                 }
             }
@@ -248,7 +284,7 @@ namespace Laska
                     Tower righterTower = this[righter];
                     if (righterTower == null || righterTower.Count == 0)
                     {
-                        actions.Add(new Action(position, right, righter));
+                        actions.Add(new Move(position, right, righter));
                     }
                 }
             }
@@ -258,9 +294,9 @@ namespace Laska
             return actions;
         }
 
-        private List<Action> generalWalk(Position position)
+        private List<Move> generalWalk(Position position)
         {
-            List<Action> actions = new List<Action>();
+            List<Move> actions = new List<Move>();
 
             for (int i = 1; i < 7; i++)
             {
@@ -273,7 +309,7 @@ namespace Laska
                 }
                 else
                 {
-                    actions.Add(new Action(position, leftFront));
+                    actions.Add(new Move(position, leftFront));
                 }
             }
             for (int i = 1; i < 7; i++)
@@ -287,7 +323,7 @@ namespace Laska
                 }
                 else
                 {
-                    actions.Add(new Action(position, leftBack));
+                    actions.Add(new Move(position, leftBack));
                 }
             }
             for (int i = 1; i < 7; i++)
@@ -301,7 +337,7 @@ namespace Laska
                 }
                 else
                 {
-                    actions.Add(new Action(position, rightFront));
+                    actions.Add(new Move(position, rightFront));
                 }
             }
             for (int i = 1; i < 7; i++)
@@ -315,16 +351,16 @@ namespace Laska
                 }
                 else
                 {
-                    actions.Add(new Action(position, rightBack));
+                    actions.Add(new Move(position, rightBack));
                 }
             }
 
             return actions;
         }
 
-        private List<Action> generalHop(Position position)
+        private List<Move> generalHop(Position position)
         {
-            List<Action> actions = new List<Action>();
+            List<Move> actions = new List<Move>();
 
             for (int i = 1; i < 7; i++)
             {
@@ -345,7 +381,7 @@ namespace Laska
                     Tower t = this[p];
                     if (t != null && t.Count == 0)
                     {
-                        actions.Add(new Action(position, leftFront, p));
+                        actions.Add(new Move(position, leftFront, p));
                     }
                     break;
                 }
@@ -368,7 +404,7 @@ namespace Laska
                     Tower t = this[p];
                     if (t != null && t.Count == 0)
                     {
-                        actions.Add(new Action(position, leftBack, p));
+                        actions.Add(new Move(position, leftBack, p));
                     }
                     break;
                 }
@@ -391,7 +427,7 @@ namespace Laska
                     Tower t = this[p];
                     if (t != null && t.Count == 0)
                     {
-                        actions.Add(new Action(position, rightFront, p));
+                        actions.Add(new Move(position, rightFront, p));
                     }
                     break;
                 }
@@ -414,7 +450,7 @@ namespace Laska
                     Tower t = this[p];
                     if (t != null && t.Count == 0)
                     {
-                        actions.Add(new Action(position, rightBack, p));
+                        actions.Add(new Move(position, rightBack, p));
                     }
                     break;
                 }

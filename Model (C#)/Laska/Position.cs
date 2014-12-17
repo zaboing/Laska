@@ -78,6 +78,37 @@ namespace Laska
         {
             return base.GetHashCode();
         }
+
+        public static Position Convert(string pos)
+        {
+            Array values = Enum.GetValues(typeof(Column));
+            Column[] columns = new Column[values.Length];
+            values.CopyTo(columns, 0);
+            Column? column = new Column?();
+            foreach (Column col in columns)
+            {
+                if (Enum.GetName(typeof(Column), col).ToLower() == Char.ToLower(pos[0]).ToString())
+                {
+                    column = col;
+                }
+            }
+            if (column.HasValue)
+            {
+                int row;
+                if (!int.TryParse(pos[1].ToString(), out row))
+                {
+                    throw new ArgumentException("Invalid row: " + pos);
+                }
+                Position p = new Position();
+                p.Col = column.Value;
+                p.BRow = (byte)(row - 1);
+                return p;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid column: " + pos);
+            }
+        }
     }
 
     public enum Column
