@@ -71,6 +71,12 @@ namespace Laska
             {
                 t.Append(token);
             }
+            if (t.Peek().Color.Goal() == End.Row)
+            {
+                Token token = t.Pop();
+                token.Value = TokenValue.GENERAL;
+                t.Push(token);
+            }
             board.ChangeTurns();
         }
 
@@ -117,6 +123,18 @@ namespace Laska
         public override int GetHashCode()
         {
             return Start.ToString().GetHashCode() ^ End.ToString().GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder();
+
+            foreach (Position hop in Hops)
+            {
+                builder.Append(hop.ToString());
+            }
+
+            return builder.ToString();
         }
     }
 }

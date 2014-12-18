@@ -4,12 +4,12 @@ using Laska;
 
 public class ActionHighlight : MonoBehaviour {
 
-    private Action action;
+    private Move move;
     private GameBoard gameBoard;
 
-    public void SetAction(Action action)
+    public void SetAction(Move move)
     {
-        this.action = action;
+        this.move = move;
     }
 
     public void SetGameBoard(GameBoard gameBoard)
@@ -19,7 +19,7 @@ public class ActionHighlight : MonoBehaviour {
 
     void OnMouseDown()
     {
-        action.Perform(gameBoard.Board);
+        gameBoard.Board = gameBoard.Board.doMove(move);
         gameBoard.Build();
     }
 }

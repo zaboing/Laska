@@ -5,7 +5,7 @@ using Laska;
 
 public class GameBoard : MonoBehaviour {
 
-    public const string TestBoard = "w,w,,,/,b,,/w,b,,,/b,,w/,w,,w,b/b,b,b,/b,b,b,b,/";
+    public const string TestBoard = "WW,W,Wb,,/,wWb,,/WWb,,,B,/,bB,,/,,,W,/,,wWbb,/,BB,B,,";
 
     public GameObject WhiteSoldier;
     public GameObject WhiteGeneral;
@@ -39,7 +39,7 @@ public class GameBoard : MonoBehaviour {
         Board.Log = Debug.Log;
         if (Board == null)
         {
-            Board = new Board(TokenColor.WHITE, TestBoard);
+            Board = new Board(TokenColor.WHITE, Board.DEFAULT);
         }
         for (byte i = 0; i < 7; i++)
         {

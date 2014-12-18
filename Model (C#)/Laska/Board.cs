@@ -5,6 +5,19 @@ using System.Text;
 
 namespace Laska
 {
+    public static class TokenColorExtension
+    {
+        public static int Direction(this TokenColor color)
+        {
+            return color == TokenColor.WHITE ? 1 : -1;
+        }
+
+        public static Row Goal(this TokenColor color)
+        {
+            return color.Direction() == 1 ? Row.Max : Row.Min;
+        }
+    }
+
     public class Board
     {
         public delegate void OutLog(string line);
@@ -57,9 +70,9 @@ namespace Laska
                 {
                     for (int j = i % 2; j < 7; j += 2)
                     {
-                        Towers[j, i] = new Tower("");
-                        Towers[j, i].Position.BCol = (byte)j;
-                        Towers[j, i].Position.BRow = (byte)i;
+                        Towers[j, (i)] = new Tower("");
+                        Towers[j, (i)].Position.BCol = (byte)j;
+                        Towers[j, (i)].Position.BRow = (byte)(i);
                     }
                     continue;
                 }
@@ -67,15 +80,15 @@ namespace Laska
                 int count = 0;
                 for (int j = i % 2; j < 7 && count < row.Length; j += 2, ++count)
                 {
-                    Towers[j, i] = new Tower(row[count]);
-                    Towers[j, i].Position.BCol = (byte)j;
-                    Towers[j, i].Position.BRow = (byte)i;
+                    Towers[j, (i)] = new Tower(row[count]);
+                    Towers[j, (i)].Position.BCol = (byte)j;
+                    Towers[j, (i)].Position.BRow = (byte)(i);
                 }
                 for (int j = i % 2 + count * 2; j < 7; j += 2)
                 {
-                    Towers[j, i] = new Tower("");
-                    Towers[j, i].Position.BCol = (byte)j;
-                    Towers[j, i].Position.BRow = (byte)i;
+                    Towers[j, (i)] = new Tower("");
+                    Towers[j, (i)].Position.BCol = (byte)j;
+                    Towers[j, (i)].Position.BRow = (byte)(i);
                 }
             }
         }
@@ -89,17 +102,23 @@ namespace Laska
         {
             StringBuilder builder = new StringBuilder();
 
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 7 * 7; i += 2)
             {
-                for (int j = 0; j < 7; j++)
+                byte col = (byte) (i % 7);
+                byte row = (byte)(i / 7);
+                if (col < 2 && row > 0)
                 {
-                    if (Towers[j, i] != null)
-                    {
-                        builder.Append(Towers[j, i]).Append(',');
-                    }
+                    builder.Append("/");
                 }
-                builder.Append("/");
+                Tower tower = this[new Position(col, row)];
+                if (tower != null)
+                {
+                    builder.Append(tower.ToString());
+                }
+                builder.Append(",");
             }
+
+            Log(builder.ToString());
 
             return builder.ToString();
         }
@@ -146,6 +165,7 @@ namespace Laska
 
         public Board doMove(Move move)
         {
+            Log("Move: " + move.ToString());
             Board board = new Board(Turn, ToString());
             move.Perform(board);
             return board;
@@ -213,7 +233,7 @@ namespace Laska
 
         private List<Move> soldierWalk(Position position)
         {
-            int direction = this[position].Peek().Color == TokenColor.WHITE ? 1 : -1;
+            int direction = this[position].Peek().Color.Direction();
             List<Move> actions = new List<Move>(2);
 
             Position left = new Position(position);
@@ -247,7 +267,11 @@ namespace Laska
         private List<Move> soldierHop(Position position)
         {
             TokenColor color = this[position].Peek().Color;
-            int direction = color == TokenColor.WHITE ? 1 : -1;
+            return soldierHop(position, color);
+        }
+        private List<Move> soldierHop(Position position, TokenColor color) 
+        {
+            int direction = color.Direction();
             List<Move> actions = new List<Move>(2);
 
             Position left = new Position(position);
@@ -265,6 +289,13 @@ namespace Laska
                     if (lefterTower == null || lefterTower.Count == 0)
                     {
                         actions.Add(new Move(position, left, lefter));
+                        List<Move> furtherHops = soldierHop(lefter, color);
+                        foreach (Move move in furtherHops)
+                        {
+                            move.Hops.Insert(0, left);
+                            move.Hops.Insert(0, position);
+                        }
+                        actions.AddRange(furtherHops);
                     }
                 }
             }
@@ -285,6 +316,13 @@ namespace Laska
                     if (righterTower == null || righterTower.Count == 0)
                     {
                         actions.Add(new Move(position, right, righter));
+                        List<Move> furtherHops = soldierHop(righter, color);
+                        foreach (Move move in furtherHops)
+                        {
+                            move.Hops.Insert(0, right);
+                            move.Hops.Insert(0, position);
+                        }
+                        actions.AddRange(furtherHops);
                     }
                 }
             }
@@ -382,8 +420,13 @@ namespace Laska
                     if (t != null && t.Count == 0)
                     {
                         actions.Add(new Move(position, leftFront, p));
+                        i++;
+                        continue;
                     }
-                    break;
+                    else
+                    {
+                        break;
+                    }
                 }
             }
             for (int i = 1; i < 7; i++)
@@ -405,8 +448,13 @@ namespace Laska
                     if (t != null && t.Count == 0)
                     {
                         actions.Add(new Move(position, leftBack, p));
+                        i++;
+                        continue;
                     }
-                    break;
+                    else
+                    {
+                        break;
+                    }
                 }
             }
             for (int i = 1; i < 7; i++)
@@ -428,8 +476,13 @@ namespace Laska
                     if (t != null && t.Count == 0)
                     {
                         actions.Add(new Move(position, rightFront, p));
+                        i++;
+                        continue;
                     }
-                    break;
+                    else
+                    {
+                        break;
+                    }
                 }
             }
             for (int i = 1; i < 7; i++)
@@ -451,8 +504,13 @@ namespace Laska
                     if (t != null && t.Count == 0)
                     {
                         actions.Add(new Move(position, rightBack, p));
+                        i++;
+                        continue;
                     }
-                    break;
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 

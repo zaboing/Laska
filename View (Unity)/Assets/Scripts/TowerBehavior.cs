@@ -37,8 +37,13 @@ public class TowerBehavior : MonoBehaviour {
             }
         }
         var actions = Board.GetValidActions((byte)transform.position.x, (byte)transform.position.y);
+        var possMoves = Board.possMoves();
         foreach (var action in actions)
         {
+            if (!possMoves.Contains(action))
+            {
+                continue;
+            }
             var position = action.End;
             if (HighlightPrefab)
             {

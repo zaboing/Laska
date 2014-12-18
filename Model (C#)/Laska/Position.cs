@@ -57,7 +57,7 @@ namespace Laska
 
         public override string ToString()
         {
-            return Col + " " + Row;
+            return Col.ToString() + Row;
         }
 
         public override bool Equals(object obj)

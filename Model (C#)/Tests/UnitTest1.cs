@@ -737,7 +737,7 @@ namespace LaskaUnitTests
 
             Move m = new Move("a3b4");
             b = b.doMove(m);
-            Assert.IsTrue(b.possMoves().Contains(m));
+            Assert.IsFalse(b.possMoves().Contains(m));
         }
 
         [TestMethod]
@@ -750,7 +750,6 @@ namespace LaskaUnitTests
             Assert.IsTrue(b.possMoves().Contains(m));
             b = b.doMove(m);
             m = new Move("d2c3b4");
-            HashSet<Move> poss = b.possMoves();
             Assert.IsTrue(b.possMoves().Contains(m));
             b = b.doMove(m);
             m = new Move("f6e5");
@@ -765,10 +764,7 @@ namespace LaskaUnitTests
             m = new Move("c3d4");
             Assert.IsTrue(b.possMoves().Contains(m));
             b = b.doMove(m);
-            m = new Move("a5b4c3");
-            Assert.IsTrue(b.possMoves().Contains(m));
-            b = b.doMove(m);
-            m = new Move("c3d2e1");
+            m = new Move("a5b4c3d2e1");
             Assert.IsTrue(b.possMoves().Contains(m));
             b = b.doMove(m);
             m = new Move("g3f4");
