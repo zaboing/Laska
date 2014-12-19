@@ -64,7 +64,7 @@ namespace Laska
                 }
             }
             Tower t = board[Start];
-            board[Start] = null;
+            board[Start] = new Tower("");
             board[End] = t;
             t.Position = End;
             foreach (Token token in bounty)

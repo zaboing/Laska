@@ -29,8 +29,6 @@ namespace Laska
 
         public TokenColor Turn;
 
-        public Position? LockedPosition;
-
         public static OutLog Log = Console.WriteLine;
 
         public Board()
@@ -55,6 +53,12 @@ namespace Laska
         {
             Turn = turn;
             Apply(value);
+        }
+
+        public Board(Board board)
+        {
+            Turn = board.Turn;
+            Apply(board.ToString());
         }
 
         public void Apply(string value)
@@ -158,77 +162,89 @@ namespace Laska
             {
                 Turn = TokenColor.BLACK;
             }
-            LockedPosition = null;
         }
 
         public Board doMove(Move move)
         {
-            Log("Move: " + move.ToString());
             Board board = new Board(Turn, ToString());
             move.Perform(board);
-            Log("Before: " + ToString());
-            Log("After: " + board.ToString());
             return board;
         }
 
         public HashSet<Move> possMoves()
         {
-            HashSet<Move> moves = new HashSet<Move>();
+            HashSet<Move> walks = new HashSet<Move>();
+            HashSet<Move> hops = new HashSet<Move>();
             for (int i = 0; i < 7 * 7; i++)
             {
                 int x = i % 7;
                 int y = i / 7;
-                List<Move> actions = GetValidActions((byte)x, (byte)y);
-                foreach (Move action in actions)
+                List<Move> w = GetWalks(new Position((byte)x, (byte)y));
+                foreach (Move walk in w)
                 {
-                    moves.Add(action);
+                    if (this[walk.Start].Peek().Color == Turn)
+                    {
+                        walks.Add(walk);
+                    }
+                }
+                List<Move> h = GetHops(new Position((byte)x, (byte)y));
+                foreach (Move hop in h)
+                {
+                    if (this[hop.Start].Peek().Color == Turn)
+                    {
+                        hops.Add(hop);
+                    }
                 }
             }
-            return moves;
-        }
-
-        public List<Move> GetValidActions(byte x, byte y)
-        {
-            return GetValidActions(new Position(x, y));
-        }
-
-        public List<Move> GetValidActions(Position position)
-        {
-            List<Move> actions = new List<Move>(2);
-
-            if (LockedPosition.HasValue && !LockedPosition.Value.Equals(position))
+            if (hops.Count > 0)
             {
-                return actions;
+                return hops;
             }
+            else
+            {
+                return walks;
+            }
+        }
 
+        public List<Move> GetWalks(Position position)
+        {
             Tower tower = this[position];
             if (tower == null || tower.Count == 0)
             {
-                return actions;
+                return new List<Move>();
             }
             var token = tower.Peek();
-            /*if (token.Color != Turn)
-            {
-                return actions;
-            }*/
             if (token.Value == TokenValue.SOLDIER)
             {
-                if (!LockedPosition.HasValue)
-                {
-                    actions.AddRange(soldierWalk(position));
-                }
-                actions.AddRange(soldierHop(position));
+                return soldierWalk(position);
             }
-            else if (token.Value == TokenValue.GENERAL)
+            else
             {
-                if (!LockedPosition.HasValue)
-                {
-                    actions.AddRange(generalWalk(position));
-                }
-                actions.AddRange(generalHop(position));
+                return generalWalk(position);
             }
+        }
 
-            return actions;
+        public List<Move> GetHops(Position position)
+        {
+            Tower tower = this[position];
+            if (tower == null || tower.Count == 0)
+            {
+                return new List<Move>();
+            }
+            var token = tower.Peek();
+            if (token.Value == TokenValue.SOLDIER)
+            {
+                return soldierHop(position);
+            }
+            else
+            {
+                return generalHop(position);
+            }
+        }
+
+        public IEnumerable<Move> GetMoves(Position position)
+        {
+            return GetWalks(position).Union(GetHops(position));
         }
 
         private List<Move> soldierWalk(Position position)
@@ -425,17 +441,15 @@ namespace Laska
                     if (t != null && t.Count == 0)
                     {
                         Move hop = new Move(position, leftFront, p);
-                        actions.Add(hop);/*
-                        Board board = new Board(Turn, ToString());
-                        board.doMove(hop);
-                        board.Turn = Turn;
-                        List<Move> furtherHops = board.generalHop(position, color);
-                        foreach (Move move in furtherHops)
+                        actions.Add(hop);
+                        Board board = new Board(this).doMove(hop);
+                        var furtherHops = board.GetHops(hop.End);
+                        foreach (var furtherHop in furtherHops)
                         {
-                            move.Hops.Insert(0, leftFront);
-                            move.Hops.Insert(0, position);
+                            furtherHop.Hops.InsertRange(0, hop.Hops);
+                            furtherHop.Hops.RemoveAt(hop.Hops.Count);
                         }
-                        actions.AddRange(furtherHops);*/
+                        actions.AddRange(furtherHops);
                     }
                     break;
                 }
@@ -459,17 +473,15 @@ namespace Laska
                     if (t != null && t.Count == 0)
                     {
                         Move hop = new Move(position, leftBack, p);
-                        actions.Add(hop);/*
-                        Board board = new Board(Turn, ToString());
-                        board.doMove(hop);
-                        board.Turn = Turn;
-                        List<Move> furtherHops = board.generalHop(position, color);
-                        foreach (Move move in furtherHops)
+                        actions.Add(hop);
+                        Board board = new Board(this).doMove(hop);
+                        var furtherHops = board.GetHops(hop.End);
+                        foreach (var furtherHop in furtherHops)
                         {
-                            move.Hops.Insert(0, leftBack);
-                            move.Hops.Insert(0, position);
+                            furtherHop.Hops.InsertRange(0, hop.Hops);
+                            furtherHop.Hops.RemoveAt(hop.Hops.Count);
                         }
-                        actions.AddRange(furtherHops);*/
+                        actions.AddRange(furtherHops);
                     }
                     break;
                 }
@@ -493,17 +505,15 @@ namespace Laska
                     if (t != null && t.Count == 0)
                     {
                         Move hop = new Move(position, rightFront, p);
-                        actions.Add(hop);/*
-                        Board board = new Board(Turn, ToString());
-                        board.doMove(hop);
-                        board.Turn = Turn;
-                        List<Move> furtherHops = board.generalHop(position, color);
-                        foreach (Move move in furtherHops)
+                        actions.Add(hop);
+                        Board board = new Board(this).doMove(hop);
+                        var furtherHops = board.GetHops(hop.End);
+                        foreach (var furtherHop in furtherHops)
                         {
-                            move.Hops.Insert(0, rightFront);
-                            move.Hops.Insert(0, position);
+                            furtherHop.Hops.InsertRange(0, hop.Hops);
+                            furtherHop.Hops.RemoveAt(hop.Hops.Count);
                         }
-                        actions.AddRange(furtherHops);*/
+                        actions.AddRange(furtherHops);
                     }
                     break;
                 }
@@ -527,17 +537,15 @@ namespace Laska
                     if (t != null && t.Count == 0)
                     {
                         Move hop = new Move(position, rightBack, p);
-                        actions.Add(hop);/*
-                        Board board = new Board(Turn, ToString());
-                        board.doMove(hop);
-                        board.Turn = Turn;
-                        List<Move> furtherHops = board.generalHop(position, color);
-                        foreach (Move move in furtherHops)
+                        actions.Add(hop);
+                        Board board = new Board(this).doMove(hop);
+                        var furtherHops = board.GetHops(hop.End);
+                        foreach (var furtherHop in furtherHops)
                         {
-                            move.Hops.Insert(0, rightBack);
-                            move.Hops.Insert(0, position);
+                            furtherHop.Hops.InsertRange(0, hop.Hops);
+                            furtherHop.Hops.RemoveAt(hop.Hops.Count);
                         }
-                        actions.AddRange(furtherHops);*/
+                        actions.AddRange(furtherHops);
                     }
                     break;
                 }

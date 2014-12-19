@@ -34,7 +34,7 @@ namespace LaskaUnitTests
         [TestMethod]
         public void TestMethodBoardPosMovesData1()
         {
-            Board b = new Board(TokenColor.WHITE, ",,b,b/bb,,b/b,bw,,b/,,bw/bw,,w,w/,w,w/Bww,w,w,");
+            Board b = new Board(TokenColor.WHITE, "Bww,w,w,/,w,w/bw,,w,w/,,bw/b,bw,,b/bb,,b/,,b,b");
             moves.Add(new Move("g3f4e5"));
             Assert.IsTrue(moves.SetEquals(b.possMoves()));
         }
@@ -43,6 +43,7 @@ namespace LaskaUnitTests
         {
             initW = initW.doMove(new Move("a3b4"));
             moves.Add(new Move("c5b4a3"));
+            var m = initW.possMoves();
             Assert.IsTrue(moves.SetEquals(initW.possMoves()));
         }
         [TestMethod]
@@ -259,16 +260,10 @@ namespace LaskaUnitTests
             m = new Move("c5d4");
             Assert.IsTrue(b.possMoves().Contains(m));
             b = b.doMove(m);
-            m = new Move("e3d4c5");
+            m = new Move("e3d4c5b6a7");
             Assert.IsTrue(b.possMoves().Contains(m));
             b = b.doMove(m);
-            m = new Move("c5b6a7");
-            Assert.IsTrue(b.possMoves().Contains(m));
-            b = b.doMove(m);
-            m = new Move("e5d4c3");
-            Assert.IsTrue(b.possMoves().Contains(m));
-            b = b.doMove(m);
-            m = new Move("c3b2a1");
+            m = new Move("e5d4c3b2a1");
             Assert.IsTrue(b.possMoves().Contains(m));
             b = b.doMove(m);
             m = new Move("a7b6c5");
@@ -720,7 +715,7 @@ namespace LaskaUnitTests
         {
             string s = ",,,BBww,/WB,WB,WB,/,,,,/WB,WB,WB,/,,,,/WB,WB,WB,/,,,,";
             b = new Board(s, TokenColor.BLACK);
-            Move m = new Move("g7f6e5d6c7b6a5b4c3d2e1f2g3f4e5d4c3b2a1");
+            Move m = new Move("g1f2e3d2c1b2a3b4c5d6e7f6g5f4e3d4c5b6a7");
             Assert.IsTrue(b.possMoves().Contains(m));
             b = b.doMove(m);
             string s2 = ",,,,/B,B,B,/,,,,/B,B,B,/,,,,/B,B,B,/BBwwWWWWWWWWW,,,,";
