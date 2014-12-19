@@ -36,21 +36,22 @@ public class TowerBehavior : MonoBehaviour {
                 child.gameObject.SetActive(true);
             }
         }
-        var actions = Board.GetValidActions((byte)transform.position.x, (byte)transform.position.y);
+        byte col = (byte)transform.position.x;
+        byte row = (byte)transform.position.y;
         var possMoves = Board.possMoves();
-        foreach (var action in actions)
+        foreach (var move in possMoves)
         {
-            if (!possMoves.Contains(action))
+            if (move.Start.BRow != row || move.Start.BCol != col)
             {
                 continue;
             }
-            var position = action.End;
+            var position = move.End;
             if (HighlightPrefab)
             {
                 GameObject highlight = Instantiate(HighlightPrefab) as GameObject;
                 highlight.transform.parent = transform;
                 highlight.name = "Highlight";
-                highlight.SendMessage("SetAction", action, SendMessageOptions.DontRequireReceiver);
+                highlight.SendMessage("SetAction", move, SendMessageOptions.DontRequireReceiver);
                 highlight.SendMessage("SetGameBoard", GameBoard, SendMessageOptions.DontRequireReceiver);
                 highlight.transform.position = new Vector2(position.BCol, position.BRow) + new Vector2(.5f, .5f);
                 highlights.Add(highlight);

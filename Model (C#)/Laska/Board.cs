@@ -118,8 +118,6 @@ namespace Laska
                 builder.Append(",");
             }
 
-            Log(builder.ToString());
-
             return builder.ToString();
         }
 
@@ -168,6 +166,8 @@ namespace Laska
             Log("Move: " + move.ToString());
             Board board = new Board(Turn, ToString());
             move.Perform(board);
+            Log("Before: " + ToString());
+            Log("After: " + board.ToString());
             return board;
         }
 
@@ -207,10 +207,10 @@ namespace Laska
                 return actions;
             }
             var token = tower.Peek();
-            if (token.Color != Turn)
+            /*if (token.Color != Turn)
             {
                 return actions;
-            }
+            }*/
             if (token.Value == TokenValue.SOLDIER)
             {
                 if (!LockedPosition.HasValue)
@@ -398,6 +398,11 @@ namespace Laska
 
         private List<Move> generalHop(Position position)
         {
+            return generalHop(position, this[position].Peek().Color);
+        }
+
+        private List<Move> generalHop(Position position, TokenColor color)
+        {
             List<Move> actions = new List<Move>();
 
             for (int i = 1; i < 7; i++)
@@ -411,7 +416,7 @@ namespace Laska
                     break;
                 }
 
-                if (tower.Count > 0 && tower.Peek().Color != this[position].Peek().Color)
+                if (tower.Count > 0 && tower.Peek().Color != color)
                 {
                     Position p = new Position(leftFront);
                     p.BCol--;
@@ -419,14 +424,20 @@ namespace Laska
                     Tower t = this[p];
                     if (t != null && t.Count == 0)
                     {
-                        actions.Add(new Move(position, leftFront, p));
-                        i++;
-                        continue;
+                        Move hop = new Move(position, leftFront, p);
+                        actions.Add(hop);/*
+                        Board board = new Board(Turn, ToString());
+                        board.doMove(hop);
+                        board.Turn = Turn;
+                        List<Move> furtherHops = board.generalHop(position, color);
+                        foreach (Move move in furtherHops)
+                        {
+                            move.Hops.Insert(0, leftFront);
+                            move.Hops.Insert(0, position);
+                        }
+                        actions.AddRange(furtherHops);*/
                     }
-                    else
-                    {
-                        break;
-                    }
+                    break;
                 }
             }
             for (int i = 1; i < 7; i++)
@@ -439,7 +450,7 @@ namespace Laska
                     break;
                 }
 
-                if (tower.Count > 0 && tower.Peek().Color != this[position].Peek().Color)
+                if (tower.Count > 0 && tower.Peek().Color != color)
                 {
                     Position p = new Position(leftBack);
                     p.BCol--;
@@ -447,14 +458,20 @@ namespace Laska
                     Tower t = this[p];
                     if (t != null && t.Count == 0)
                     {
-                        actions.Add(new Move(position, leftBack, p));
-                        i++;
-                        continue;
+                        Move hop = new Move(position, leftBack, p);
+                        actions.Add(hop);/*
+                        Board board = new Board(Turn, ToString());
+                        board.doMove(hop);
+                        board.Turn = Turn;
+                        List<Move> furtherHops = board.generalHop(position, color);
+                        foreach (Move move in furtherHops)
+                        {
+                            move.Hops.Insert(0, leftBack);
+                            move.Hops.Insert(0, position);
+                        }
+                        actions.AddRange(furtherHops);*/
                     }
-                    else
-                    {
-                        break;
-                    }
+                    break;
                 }
             }
             for (int i = 1; i < 7; i++)
@@ -467,7 +484,7 @@ namespace Laska
                     break;
                 }
 
-                if (tower.Count > 0 && tower.Peek().Color != this[position].Peek().Color)
+                if (tower.Count > 0 && tower.Peek().Color != color)
                 {
                     Position p = new Position(rightFront);
                     p.BCol++;
@@ -475,14 +492,20 @@ namespace Laska
                     Tower t = this[p];
                     if (t != null && t.Count == 0)
                     {
-                        actions.Add(new Move(position, rightFront, p));
-                        i++;
-                        continue;
+                        Move hop = new Move(position, rightFront, p);
+                        actions.Add(hop);/*
+                        Board board = new Board(Turn, ToString());
+                        board.doMove(hop);
+                        board.Turn = Turn;
+                        List<Move> furtherHops = board.generalHop(position, color);
+                        foreach (Move move in furtherHops)
+                        {
+                            move.Hops.Insert(0, rightFront);
+                            move.Hops.Insert(0, position);
+                        }
+                        actions.AddRange(furtherHops);*/
                     }
-                    else
-                    {
-                        break;
-                    }
+                    break;
                 }
             }
             for (int i = 1; i < 7; i++)
@@ -495,7 +518,7 @@ namespace Laska
                     break;
                 }
 
-                if (tower.Count > 0 && tower.Peek().Color != this[position].Peek().Color)
+                if (tower.Count > 0 && tower.Peek().Color != color)
                 {
                     Position p = new Position(rightBack);
                     p.BCol++;
@@ -503,14 +526,20 @@ namespace Laska
                     Tower t = this[p];
                     if (t != null && t.Count == 0)
                     {
-                        actions.Add(new Move(position, rightBack, p));
-                        i++;
-                        continue;
+                        Move hop = new Move(position, rightBack, p);
+                        actions.Add(hop);/*
+                        Board board = new Board(Turn, ToString());
+                        board.doMove(hop);
+                        board.Turn = Turn;
+                        List<Move> furtherHops = board.generalHop(position, color);
+                        foreach (Move move in furtherHops)
+                        {
+                            move.Hops.Insert(0, rightBack);
+                            move.Hops.Insert(0, position);
+                        }
+                        actions.AddRange(furtherHops);*/
                     }
-                    else
-                    {
-                        break;
-                    }
+                    break;
                 }
             }
 

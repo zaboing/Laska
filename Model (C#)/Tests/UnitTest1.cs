@@ -78,10 +78,7 @@ namespace LaskaUnitTests
             m = new Move("c5d4");
             Assert.IsTrue(b.possMoves().Contains(m));
             b = b.doMove(m);
-            m = new Move("c3d4e5");
-            Assert.IsTrue(b.possMoves().Contains(m));
-            b = b.doMove(m);
-            m = new Move("e5f6g7");
+            m = new Move("c3d4e5f6g7");
             Assert.IsTrue(b.possMoves().Contains(m));
             b = b.doMove(m);
             m = new Move("a5b4c3");

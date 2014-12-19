@@ -19,6 +19,7 @@ public class ActionHighlight : MonoBehaviour {
 
     void OnMouseDown()
     {
+        gameBoard.History.Insert(0, gameBoard.Board);
         gameBoard.Board = gameBoard.Board.doMove(move);
         gameBoard.Build();
     }

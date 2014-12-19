@@ -18,7 +18,11 @@ public class GameBoard : MonoBehaviour {
 
     public static GameObject SelectedTower;
 
+
+
     public Board Board;
+
+    public readonly List<Board> History = new List<Board>();
 
     void Start()
     {
@@ -116,10 +120,12 @@ public class GameBoard : MonoBehaviour {
 
     void OnGUI()
     {
-        GUI.enabled = Board.LockedPosition.HasValue;
-        if (GUI.Button(new Rect(30, Screen.height / 2 - 10, 100, 20), "Next Turn"))
+        GUI.enabled = History.Count > 0;
+        if (GUI.Button(new Rect(30, Screen.height / 2 - 10, 100, 20), "Undo"))
         {
-            Board.ChangeTurns();
+            Board = History[0];
+            History.RemoveAt(0);
+            Build();
         }
     }
 }
