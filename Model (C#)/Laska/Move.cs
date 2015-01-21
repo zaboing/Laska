@@ -122,7 +122,7 @@ namespace Laska
         }
         public override int GetHashCode()
         {
-            return Start.ToString().GetHashCode() ^ End.ToString().GetHashCode();
+            return Start.ToString().GetHashCode() + End.ToString().GetHashCode();
         }
 
         public override string ToString()
