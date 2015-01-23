@@ -88,10 +88,7 @@ public class GameBoard : MonoBehaviour {
                 TowerBehavior towerBehavior = gameObject.AddComponent<TowerBehavior>();
                 towerBehavior.GameBoard = this;
                 towerBehavior.HighlightPrefab = HighlightPrefab;
-                if (Board.LockedPosition.HasValue && Board.LockedPosition.Value.Equals(tower.Position))
-                {
-                    Clicked(gameObject, false);
-                }
+                
             }
         }
     }
@@ -103,19 +100,12 @@ public class GameBoard : MonoBehaviour {
 
     private void Clicked(GameObject tower, bool checkLock)
     {
-        if (checkLock && Board.LockedPosition.HasValue)
+        if (SelectedTower)
         {
-            return;
+            SelectedTower.SendMessage("Unselect");
         }
-        else
-        {
-            if (SelectedTower)
-            {
-                SelectedTower.SendMessage("Unselect");
-            }
-            SelectedTower = tower;
-            tower.SendMessage("Select");
-        }
+        SelectedTower = tower;
+        tower.SendMessage("Select");
     }
 
     void OnGUI()

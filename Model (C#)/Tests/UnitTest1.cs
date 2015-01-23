@@ -35,17 +35,31 @@ namespace LaskaUnitTests
         public void TestMethodBoardPosMovesData1()
         {
             Board b = new Board(TokenColor.WHITE, "Bww,w,w,/,w,w/bw,,w,w/,,bw/b,bw,,b/bb,,b/,,b,b");
+            moves.Add(new Move("a3b4"));
+            moves.Add(new Move("c3b4"));
+            moves.Add(new Move("c3d4"));
+            moves.Add(new Move("e3d4"));
+            moves.Add(new Move("e3f4"));
             moves.Add(new Move("g3f4e5"));
+
+            var m = initW.possMoves();
+
             Assert.IsTrue(moves.SetEquals(b.possMoves()));
         }
         [TestMethod]
         public void TestMethodBoardPosMovesData2()
         {
             initW = initW.doMove(new Move("a3b4"));
+            moves.Add(new Move("c5d4"));
+            moves.Add(new Move("e5d4"));
+            moves.Add(new Move("e5f4"));
+            moves.Add(new Move("g5f4"));
+
             moves.Add(new Move("c5b4a3"));
-            var m = initW.possMoves();
+
             Assert.IsTrue(moves.SetEquals(initW.possMoves()));
         }
+
         [TestMethod]
         public void TestGame1()  // http://www.lasca.org/show?1VB
         {
@@ -179,6 +193,7 @@ namespace LaskaUnitTests
             Assert.IsTrue(b.possMoves().Contains(m));
             b = b.doMove(m);
             m = new Move("b2c1");
+            var s = b.ToString() + " " + b.Turn;
             Assert.IsTrue(b.possMoves().Contains(m));
             b = b.doMove(m);
             m = new Move("c5d4");  // Zug 23 e3-d4 unzulässig???

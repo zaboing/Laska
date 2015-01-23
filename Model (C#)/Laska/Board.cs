@@ -196,6 +196,14 @@ namespace Laska
                     }
                 }
             }
+            foreach (var hop in hops)
+            {
+                walks.Add(hop);
+            }
+
+            return walks;
+
+            /*
             if (hops.Count > 0)
             {
                 return hops;
@@ -203,7 +211,7 @@ namespace Laska
             else
             {
                 return walks;
-            }
+            }*/
         }
 
         public List<Move> GetWalks(Position position)
@@ -432,123 +440,151 @@ namespace Laska
                     break;
                 }
 
-                if (tower.Count > 0 && tower.Peek().Color != color)
+                if (tower.Count == 0)
                 {
-                    Position p = new Position(leftFront);
-                    p.BCol--;
-                    p.BRow++;
-                    Tower t = this[p];
-                    if (t != null && t.Count == 0)
-                    {
-                        Move hop = new Move(position, leftFront, p);
-                        actions.Add(hop);
-                        Board board = new Board(this).doMove(hop);
-                        var furtherHops = board.GetHops(hop.End);
-                        foreach (var furtherHop in furtherHops)
-                        {
-                            furtherHop.Hops.InsertRange(0, hop.Hops);
-                            furtherHop.Hops.RemoveAt(hop.Hops.Count);
-                        }
-                        actions.AddRange(furtherHops);
-                    }
+                    continue;
+                }
+                if (tower.Peek().Color == color)
+                {
                     break;
                 }
+
+                Position p = new Position(leftFront);
+                p.BCol--;
+                p.BRow++;
+                Tower t = this[p];
+                if (t != null && t.Count == 0)
+                {
+                    Move hop = new Move(position, leftFront, p);
+                    actions.Add(hop);
+                    Board board = new Board(this).doMove(hop);
+                    var furtherHops = board.GetHops(hop.End);
+                    foreach (var furtherHop in furtherHops)
+                    {
+                        furtherHop.Hops.InsertRange(0, hop.Hops);
+                        furtherHop.Hops.RemoveAt(hop.Hops.Count);
+                    }
+                    actions.AddRange(furtherHops);
+                }
+                break;
             }
             for (int i = 1; i < 7; i++)
             {
                 Position leftBack = new Position((byte)(position.BCol - i), (byte)(position.BRow - i));
 
                 Tower tower = this[leftBack];
+
+
                 if (tower == null)
                 {
                     break;
                 }
 
-                if (tower.Count > 0 && tower.Peek().Color != color)
+                if (tower.Count == 0)
                 {
-                    Position p = new Position(leftBack);
-                    p.BCol--;
-                    p.BRow--;
-                    Tower t = this[p];
-                    if (t != null && t.Count == 0)
-                    {
-                        Move hop = new Move(position, leftBack, p);
-                        actions.Add(hop);
-                        Board board = new Board(this).doMove(hop);
-                        var furtherHops = board.GetHops(hop.End);
-                        foreach (var furtherHop in furtherHops)
-                        {
-                            furtherHop.Hops.InsertRange(0, hop.Hops);
-                            furtherHop.Hops.RemoveAt(hop.Hops.Count);
-                        }
-                        actions.AddRange(furtherHops);
-                    }
+                    continue;
+                }
+                if (tower.Peek().Color == color)
+                {
                     break;
                 }
+
+                Position p = new Position(leftBack);
+                p.BCol--;
+                p.BRow--;
+                Tower t = this[p];
+                if (t != null && t.Count == 0)
+                {
+                    Move hop = new Move(position, leftBack, p);
+                    actions.Add(hop);
+                    Board board = new Board(this).doMove(hop);
+                    var furtherHops = board.GetHops(hop.End);
+                    foreach (var furtherHop in furtherHops)
+                    {
+                        furtherHop.Hops.InsertRange(0, hop.Hops);
+                        furtherHop.Hops.RemoveAt(hop.Hops.Count);
+                    }
+                    actions.AddRange(furtherHops);
+                }
+                break;
             }
             for (int i = 1; i < 7; i++)
             {
                 Position rightFront = new Position((byte)(position.BCol + i), (byte)(position.BRow + i));
 
                 Tower tower = this[rightFront];
+
                 if (tower == null)
                 {
                     break;
                 }
 
-                if (tower.Count > 0 && tower.Peek().Color != color)
+                if (tower.Count == 0)
                 {
-                    Position p = new Position(rightFront);
-                    p.BCol++;
-                    p.BRow++;
-                    Tower t = this[p];
-                    if (t != null && t.Count == 0)
-                    {
-                        Move hop = new Move(position, rightFront, p);
-                        actions.Add(hop);
-                        Board board = new Board(this).doMove(hop);
-                        var furtherHops = board.GetHops(hop.End);
-                        foreach (var furtherHop in furtherHops)
-                        {
-                            furtherHop.Hops.InsertRange(0, hop.Hops);
-                            furtherHop.Hops.RemoveAt(hop.Hops.Count);
-                        }
-                        actions.AddRange(furtherHops);
-                    }
+                    continue;
+                }
+                if (tower.Peek().Color == color)
+                {
                     break;
                 }
+
+                Position p = new Position(rightFront);
+                p.BCol++;
+                p.BRow++;
+                Tower t = this[p];
+                if (t != null && t.Count == 0)
+                {
+                    Move hop = new Move(position, rightFront, p);
+                    actions.Add(hop);
+                    Board board = new Board(this).doMove(hop);
+                    var furtherHops = board.GetHops(hop.End);
+                    foreach (var furtherHop in furtherHops)
+                    {
+                        furtherHop.Hops.InsertRange(0, hop.Hops);
+                        furtherHop.Hops.RemoveAt(hop.Hops.Count);
+                    }
+                    actions.AddRange(furtherHops);
+                }
+                break;
             }
             for (int i = 1; i < 7; i++)
             {
                 Position rightBack = new Position((byte)(position.BCol + i), (byte)(position.BRow - i));
 
                 Tower tower = this[rightBack];
+
                 if (tower == null)
                 {
                     break;
                 }
 
-                if (tower.Count > 0 && tower.Peek().Color != color)
+                if (tower.Count == 0)
                 {
-                    Position p = new Position(rightBack);
-                    p.BCol++;
-                    p.BRow--;
-                    Tower t = this[p];
-                    if (t != null && t.Count == 0)
-                    {
-                        Move hop = new Move(position, rightBack, p);
-                        actions.Add(hop);
-                        Board board = new Board(this).doMove(hop);
-                        var furtherHops = board.GetHops(hop.End);
-                        foreach (var furtherHop in furtherHops)
-                        {
-                            furtherHop.Hops.InsertRange(0, hop.Hops);
-                            furtherHop.Hops.RemoveAt(hop.Hops.Count);
-                        }
-                        actions.AddRange(furtherHops);
-                    }
+                    continue;
+                }
+                if (tower.Peek().Color == color)
+                {
                     break;
                 }
+
+                Position p = new Position(rightBack);
+                p.BCol++;
+                p.BRow--;
+                Tower t = this[p];
+                if (t != null && t.Count == 0)
+                {
+                    Move hop = new Move(position, rightBack, p);
+                    actions.Add(hop);
+                    Board board = new Board(this).doMove(hop);
+                    var furtherHops = board.GetHops(hop.End);
+                    foreach (var furtherHop in furtherHops)
+                    {
+                        furtherHop.Hops.InsertRange(0, hop.Hops);
+                        furtherHop.Hops.RemoveAt(hop.Hops.Count);
+                    }
+                    actions.AddRange(furtherHops);
+                }
+                break;
             }
 
             return actions;
