@@ -11,6 +11,7 @@ namespace Laska
     {
         static void Main(string[] args)
         {
+            ArtificialPlayer ai = new ArtificialPlayer();
             Board b = new Board(Colour.White);
             b.Init();
             ISet<Move> mov;
@@ -26,7 +27,7 @@ namespace Laska
                 {
                     movarr = mov.ToArray();
                     for (int i = 0; i < movarr.Length; i++)
-                        Console.WriteLine("{0}: {1}, ", i, movarr[i].ToString());
+                        Console.WriteLine("{0}: {1}, {2}", i, movarr[i].ToString(), ai.Minimax(b.doMove(movarr[i]), 10, true));
                     do
                     {
                         s = Console.ReadLine();
@@ -41,7 +42,7 @@ namespace Laska
                     {
                         movarr = mov.ToArray();
                         for (int i = 0; i < movarr.Length; i++)
-                            Console.WriteLine("{0}: {1}, ", i, movarr[i].ToString());
+                            Console.WriteLine("{0}: {1}, {2}", i, movarr[i].ToString(), ai.Minimax(b.doMove(movarr[i]), 10, false));
                         do
                         {
                             s = Console.ReadLine();

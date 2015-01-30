@@ -56,3 +56,10 @@ D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\UnitTestProject1\bi
 D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\UnitTestProject1\obj\Debug\LaskaUnitTests.csprojResolveAssemblyReference.cache
 D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\UnitTestProject1\obj\Debug\UnitTestProject1.dll
 D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\UnitTestProject1\obj\Debug\UnitTestProject1.pdb
+C:\GitHub\Laska\UnitTestProject1\bin\Debug\UnitTestProject1.dll
+C:\GitHub\Laska\UnitTestProject1\bin\Debug\UnitTestProject1.pdb
+C:\GitHub\Laska\UnitTestProject1\bin\Debug\Laska.exe
+C:\GitHub\Laska\UnitTestProject1\bin\Debug\Laska.pdb
+C:\GitHub\Laska\UnitTestProject1\obj\Debug\LaskaUnitTests.csprojResolveAssemblyReference.cache
+C:\GitHub\Laska\UnitTestProject1\obj\Debug\UnitTestProject1.dll
+C:\GitHub\Laska\UnitTestProject1\obj\Debug\UnitTestProject1.pdb
