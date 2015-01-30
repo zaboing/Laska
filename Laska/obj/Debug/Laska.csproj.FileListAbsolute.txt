@@ -1,0 +1,55 @@
+d:\daten\documents\visual studio 2013\Projects\Laska\Laska\bin\Debug\Laska.exe.config
+d:\daten\documents\visual studio 2013\Projects\Laska\Laska\obj\Debug\Laska.csprojResolveAssemblyReference.cache
+d:\daten\documents\visual studio 2013\Projects\Laska\Laska\bin\Debug\Laska.exe
+d:\daten\documents\visual studio 2013\Projects\Laska\Laska\bin\Debug\Laska.pdb
+d:\daten\documents\visual studio 2013\Projects\Laska\Laska\obj\Debug\Laska.exe
+d:\daten\documents\visual studio 2013\Projects\Laska\Laska\obj\Debug\Laska.pdb
+d:\Daten\documents\visual studio 2013\Projects\Laska\Laska\bin\Debug\Laska.exe.CodeAnalysisLog.xml
+d:\Daten\documents\visual studio 2013\Projects\Laska\Laska\bin\Debug\Laska.exe.lastcodeanalysissucceeded
+C:\Users\Andreas\Desktop\school1415\4bhifPOSunity\Laska\Laska\Laska\bin\Debug\Laska.exe.config
+C:\Users\Andreas\Desktop\school1415\4bhifPOSunity\Laska\Laska\Laska\obj\Debug\Laska.exe
+C:\Users\Andreas\Desktop\school1415\4bhifPOSunity\Laska\Laska\Laska\obj\Debug\Laska.pdb
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska2\Laska\bin\Debug\Laska.exe.config
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska2\Laska\obj\Debug\Laska.exe
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska2\Laska\obj\Debug\Laska.pdb
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska2\Laska\obj\Debug\Laska.csprojResolveAssemblyReference.cache
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska2\Laska\bin\Debug\Laska.exe
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska2\Laska\bin\Debug\Laska.pdb
+C:\Users\Andreas\Desktop\school1415\4bhifPOSunity\Laska\Laska2\Laska\bin\Debug\Laska.exe.config
+C:\Users\Andreas\Desktop\school1415\4bhifPOSunity\Laska\Laska2\Laska\obj\Debug\Laska.exe
+C:\Users\Andreas\Desktop\school1415\4bhifPOSunity\Laska\Laska2\Laska\obj\Debug\Laska.pdb
+C:\Users\Andreas\Desktop\school1415\4bhifPOSunity\Laska\Laska2\Laska\bin\Debug\Laska.exe
+C:\Users\Andreas\Desktop\school1415\4bhifPOSunity\Laska\Laska2\Laska\bin\Debug\Laska.pdb
+C:\Users\Andreas\Desktop\school1415\4bhifPOSunity\Laska\Laska2\Laska\obj\Debug\Laska.csprojResolveAssemblyReference.cache
+C:\Users\Andreas\Desktop\school1415\4bhifPOSunity\Laska\Laska2\Laska\bin\Debug\Laska.exe.CodeAnalysisLog.xml
+C:\Users\Andreas\Desktop\school1415\4bhifPOSunity\Laska\Laska2\Laska\bin\Debug\Laska.exe.lastcodeanalysissucceeded
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska3\Laska\bin\Debug\Laska.exe.config
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska3\Laska\obj\Debug\Laska.exe
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska3\Laska\obj\Debug\Laska.pdb
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska3\Laska\bin\Debug\Laska.exe
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska3\Laska\bin\Debug\Laska.pdb
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska3\Laska\obj\Debug\Laska.csprojResolveAssemblyReference.cache
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska4\Laska\bin\Debug\Laska.exe.config
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska4\Laska\obj\Debug\Laska.exe
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska4\Laska\obj\Debug\Laska.pdb
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska4\Laska\bin\Debug\Laska.exe
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska4\Laska\bin\Debug\Laska.pdb
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska4\Laska\obj\Debug\Laska.csprojResolveAssemblyReference.cache
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska5\Laska\bin\Debug\Laska.exe.config
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska5\Laska\obj\Debug\Laska.exe
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska5\Laska\obj\Debug\Laska.pdb
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska5\Laska\bin\Debug\Laska.exe
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska5\Laska\bin\Debug\Laska.pdb
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska5\Laska\obj\Debug\Laska.csprojResolveAssemblyReference.cache
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska6\Laska\bin\Debug\Laska.exe.config
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska6\Laska\obj\Debug\Laska.exe
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska6\Laska\obj\Debug\Laska.pdb
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska6\Laska\bin\Debug\Laska.exe
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska6\Laska\bin\Debug\Laska.pdb
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska6\Laska\obj\Debug\Laska.csprojResolveAssemblyReference.cache
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\Laska\bin\Debug\Laska.exe.config
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\Laska\obj\Debug\Laska.exe
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\Laska\obj\Debug\Laska.pdb
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\Laska\obj\Debug\Laska.csprojResolveAssemblyReference.cache
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\Laska\bin\Debug\Laska.exe
+D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\Laska\bin\Debug\Laska.pdb
