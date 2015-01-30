@@ -15,9 +15,8 @@ namespace Laska
             Board b = new Board(Colour.White);
             b.Init();
             ISet<Move> mov;
-            Move[] movarr;
+            //Move[] movarr;
             Regex regex = new Regex("^[0-9]+$");
-            string s;
             do
             {
                 Console.WriteLine(b.Print());
@@ -25,30 +24,36 @@ namespace Laska
                 if (mov.Count == 0) Console.WriteLine("White Lost");
                 else
                 {
+                    var ordered = mov.OrderBy(move => ai.Minimax(b.doMove(move), 5, true));
+                    Move m = ordered.First();
+                    /*
                     movarr = mov.ToArray();
                     for (int i = 0; i < movarr.Length; i++)
-                        Console.WriteLine("{0}: {1}, {2}", i, movarr[i].ToString(), ai.Minimax(b.doMove(movarr[i]), 10, true));
+                        Console.WriteLine("{0}: {1}, {2}", i, movarr[i].ToString(), ai.Minimax(b.doMove(movarr[i]), 8, false));
                     do
                     {
                         s = Console.ReadLine();
                     }
                     while (!regex.Match(s).Success);
-                    Move m = movarr[Convert.ToInt32(s)];
+                    Move m = movarr[Convert.ToInt32(s)];*/
                     b = b.doMove(m);
                     Console.WriteLine(b.Print());
                     mov = b.possMoves();
                     if (mov.Count == 0) Console.WriteLine("Black Lost");
                     else
                     {
-                        movarr = mov.ToArray();
+                        //movarr = mov.ToArray();
+                        ordered = mov.OrderBy(move => ai.Minimax(b.doMove(move), 4, true));
+                        m = ordered.First();
+                        /*
                         for (int i = 0; i < movarr.Length; i++)
-                            Console.WriteLine("{0}: {1}, {2}", i, movarr[i].ToString(), ai.Minimax(b.doMove(movarr[i]), 10, false));
+                            Console.WriteLine("{0}: {1}, {2}", i, movarr[i].ToString(), ai.Minimax(b.doMove(movarr[i]), 8, false));
                         do
                         {
                             s = Console.ReadLine();
                         }
                         while (!regex.Match(s).Success);
-                        m = movarr[Convert.ToInt32(s)];
+                        m = movarr[Convert.ToInt32(s)];*/
                         b = b.doMove(m);
                     }
                 }
