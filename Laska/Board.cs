@@ -49,12 +49,12 @@ namespace Laska
         public static readonly Move[] backwardCaptures;
         public static readonly Move[] allMoves;
         public static readonly Move[] allCaptures;
-        public static readonly IDictionary<Pos, ISet<Move>> forwardMovesMap;
-        public static readonly IDictionary<Pos, ISet<Move>> backwardMovesMap;
-        public static readonly IDictionary<Pos, ISet<Move>> allMovesMap;
-        public static readonly IDictionary<Pos, ISet<Move>> forwardCapturesMap;
-        public static readonly IDictionary<Pos, ISet<Move>> backwardCapturesMap;
-        public static readonly IDictionary<Pos, ISet<Move>> allCapturesMap;
+        public static readonly IDictionary<Pos, HashSet<Move>> forwardMovesMap;
+        public static readonly IDictionary<Pos, HashSet<Move>> backwardMovesMap;
+        public static readonly IDictionary<Pos, HashSet<Move>> allMovesMap;
+        public static readonly IDictionary<Pos, HashSet<Move>> forwardCapturesMap;
+        public static readonly IDictionary<Pos, HashSet<Move>> backwardCapturesMap;
+        public static readonly IDictionary<Pos, HashSet<Move>> allCapturesMap;
         static Board()
         {
             backwardMoves = new Move[forwardMoves.Length];
@@ -76,13 +76,13 @@ namespace Laska
             initMap(out backwardCapturesMap, backwardCaptures);
             initMap(out allCapturesMap, allCaptures);
         }
-        static void initMap(out IDictionary<Pos, ISet<Move>> dict, Move[] moves)
+        static void initMap(out IDictionary<Pos, HashSet<Move>> dict, Move[] moves)
         {
-            dict = new Dictionary<Pos, ISet<Move>>();
+            dict = new Dictionary<Pos, HashSet<Move>>();
             foreach (Move m in moves)
             {
                 Pos p = m[0];
-                ISet<Move> mv;
+                HashSet<Move> mv;
                 if (!dict.TryGetValue(p, out mv))
                 {
                     mv = new HashSet<Move>();
@@ -248,12 +248,12 @@ namespace Laska
         {
             return !(a == b);
         }
-        public ISet<Move> possCapturesExtend(Move prefix, IDictionary<Pos, ISet<Move>> posmoves)
+        public HashSet<Move> possCapturesExtend(Move prefix, IDictionary<Pos, HashSet<Move>> posmoves)
         {
-            ISet<Move> res = new HashSet<Move>();
+            HashSet<Move> res = new HashSet<Move>();
             if (posmoves.ContainsKey(prefix.lastPos()))
             {
-                ISet<Move> moves = posmoves[prefix.lastPos()];
+                HashSet<Move> moves = posmoves[prefix.lastPos()];
                 foreach (Move m in moves)
                 {
                     if (!prefix.PreviousCapture(m[1]) && this[m[1]] != null && this[m[1]].Peek().color != turn
@@ -266,12 +266,12 @@ namespace Laska
             if (res.Count == 0) res.Add(prefix);
             return res;
         }
-        public ISet<Move> possCaptures(Pos p, IDictionary<Pos, ISet<Move>> posmoves)
+        public HashSet<Move> possCaptures(Pos p, IDictionary<Pos, HashSet<Move>> posmoves)
         {
-            ISet<Move> res = new HashSet<Move>();
+            HashSet<Move> res = new HashSet<Move>();
             if (posmoves.ContainsKey(p))
             {
-                ISet<Move> moves = posmoves[p];
+                HashSet<Move> moves = posmoves[p];
                 foreach (Move m in moves)
                 {
                     Tower t1 = this[m[1]];
@@ -286,10 +286,10 @@ namespace Laska
             
             return res;
         }
-        public ISet<Move> possSimpleMoves(Pos p, IDictionary<Pos, ISet<Move>> posmoves)
+        public HashSet<Move> possSimpleMoves(Pos p, IDictionary<Pos, HashSet<Move>> posmoves)
         {
-            ISet<Move> res = new HashSet<Move>();
-            ISet<Move> moves = posmoves[p];
+            HashSet<Move> res = new HashSet<Move>();
+            HashSet<Move> moves = posmoves[p];
             foreach (Move m in moves)
             {
                 if (this[m[1]] == null)
@@ -299,9 +299,9 @@ namespace Laska
             }
             return res;
         }
-        public ISet<Move> possMoves()
+        public HashSet<Move> possMoves()
         {
-            ISet<Move> res = new HashSet<Move>();
+            HashSet<Move> res = new HashSet<Move>();
             foreach(Pos p in this)
             {
                 if (this[p] != null && this[p].Peek().color == turn)

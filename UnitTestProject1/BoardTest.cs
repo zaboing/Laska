@@ -10,7 +10,7 @@ namespace LaskaUnitTests
     public class BoardTest
     {
         private Board initW, b;
-        private ISet<Move> moves;
+        private HashSet<Move> moves;
         [TestInitialize]
         public void Init()
         {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Laska
 {
@@ -40,6 +40,21 @@ namespace Laska
             return result;
         }
 
+        public Result MinimaxAsync(Board node, int depth, bool maximizing)
+        {
+            Result result = new Result();
+
+            Thread thread = new Thread(() =>
+            {
+                int ret = Minimax(node, depth, maximizing);
+                result.Value = ret;
+            });
+
+            thread.Start();
+
+            return result;
+        }
+
         private bool IsTerminal(Board node)
         {
             return node.possMoves().Count == 0;
@@ -73,6 +88,13 @@ namespace Laska
             {
                 return -sum;
             }
+        }
+
+        public class Result
+        {
+            public int? Value;
+
+            public bool Finished { get { return Value.HasValue;  } }
         }
     }
 

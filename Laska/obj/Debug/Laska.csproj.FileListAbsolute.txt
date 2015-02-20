@@ -53,9 +53,9 @@ D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\Laska\obj\Debug\Las
 D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\Laska\obj\Debug\Laska.csprojResolveAssemblyReference.cache
 D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\Laska\bin\Debug\Laska.exe
 D:\Daten\Documents\Dokumente\schule1415\4bhifPOSunity\Laska7\Laska\bin\Debug\Laska.pdb
-C:\GitHub\Laska\Laska\bin\Debug\Laska.exe.config
-C:\GitHub\Laska\Laska\obj\Debug\Laska.exe
 C:\GitHub\Laska\Laska\obj\Debug\Laska.pdb
-C:\GitHub\Laska\Laska\bin\Debug\Laska.exe
 C:\GitHub\Laska\Laska\bin\Debug\Laska.pdb
 C:\GitHub\Laska\Laska\obj\Debug\Laska.csprojResolveAssemblyReference.cache
+C:\GitHub\Laska\Laska\bin\Debug\Laska.dll.config
+C:\GitHub\Laska\Laska\bin\Debug\Laska.dll
+C:\GitHub\Laska\Laska\obj\Debug\Laska.dll
